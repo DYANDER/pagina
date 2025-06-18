@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>PARA TI INGRIDD UWU</title>
+  <style>
+    body {
+      background: linear-gradient(to bottom, #000, #330000);
+      height: 100vh;
+      overflow-x: hidden;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    .palabra-lluvia {
+      position: absolute;
+      top: -50px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: red;
+      font-size: 2.5em;
+      font-weight: bold;
+      animation: caer 4s linear infinite;
+    }
+
+    @keyframes caer {
+      0% { top: -50px; opacity: 0; }
+      10% { opacity: 1; }
+      100% { top: 100vh; opacity: 0; }
+    }
+
+    .corazon {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: red;
+      transform: rotate(45deg);
+      animation: flotar 10s linear infinite;
+    }
+
+    .corazon::before, .corazon::after {
+      content: "";
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: red;
+      border-radius: 50%;
+    }
+
+    .corazon::before { top: -10px; left: 0; }
+    .corazon::after  { top: 0; left: -10px; }
+
+    @keyframes flotar {
+      0% { transform: translateY(0) rotate(45deg); opacity: 1; }
+      100% { transform: translateY(-100vh) rotate(45deg); opacity: 0; }
+    }
+
+    .carta {
+      position: fixed;
+      bottom: -100%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 320px;
+      height: 220px;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(255, 0, 0, 0.7);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #900;
+      font-weight: bold;
+      text-align: center;
+      padding: 20px;
+      transition: bottom 2s ease;
+      z-index: 10;
+    }
+
+    .carta.abierta { bottom: 30%; }
+
+    .boton-abrir {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 15px 30px;
+      background: red;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 1em;
+      cursor: pointer;
+      z-index: 11;
+    }
+
+    .flecha {
+      position: fixed;
+      bottom: 70px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 2em;
+      color: white;
+      animation: parpadeo 1s infinite;
+      z-index: 11;
+    }
+
+    @keyframes parpadeo {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    .letra {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 1s ease;
+    }
+
+    .letra.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Audio con enlace directo -->
+  <audio id="musica" src="https://chat.openai.com/mnt/data/cancion_descargable.mp3" autoplay muted loop></audio>
+
+  <div class="flecha">⬇️ Dale click</div>
+  <button class="boton-abrir" onclick="abrirCarta()">Abrir carta 💌</button>
+
+  <div id="carta" class="carta">
+    Querida Ingridd, eres lo más bello que me ha pasado. Nunca olvides lo especial que eres para mí. 💖
+  </div>
+
+  <div id="contenedor-palabras"></div>
+  <div id="contenedor-corazones"></div>
+
+  <section style="max-width: 600px; margin: auto; color: white; padding: 50px;">
+    <h2 style="text-align: center;">💌 Carta para ti</h2>
+    <p class="letra">Desde que llegaste a mi vida, todo es más bonito...</p>
+    <p class="letra">No hay un solo día en que no piense en ti.</p>
+    <p class="letra">Gracias por tu cariño, tu sonrisa y tu forma de ser.</p>
+    <p class="letra">Preciosa, este detalle es solo un pequeño reflejo de lo que siento por ti.</p>
+    <p class="letra">Te amo, hoy y siempre. ❤️</p>
+  </section>
+
+  <script>
+    // Reproducir música al clic
+    window.addEventListener("click", () => {
+      const audio = document.getElementById("musica");
+      audio.muted = false;
+      audio.play();
+    }, { once: true });
+
+    // Carta animada
+    function abrirCarta() {
+      document.getElementById("carta").classList.add("abierta");
+    }
+
+    // Letras visibles al hacer scroll
+    const letras = document.querySelectorAll(".letra");
+    window.addEventListener("scroll", () => {
+      letras.forEach(el => {
+        const top = el.getBoundingClientRect().top;
+        if (top < window.innerHeight - 50) {
+          el.classList.add("visible");
+        }
+      });
+    });
+
+    // Lluvia de palabras
+    const palabras = ["Hermosa", "Preciosa", "Bella", "Ingridd", "Doncella", "Dulce", "Encantadora"];
+    setInterval(() => {
+      const palabra = document.createElement('div');
+      palabra.classList.add('palabra-lluvia');
+      palabra.style.left = Math.random() * 90 + "%";
+      palabra.innerText = palabras[Math.floor(Math.random() * palabras.length)];
+      document.getElementById("contenedor-palabras").appendChild(palabra);
+      setTimeout(() => palabra.remove(), 5000);
+    }, 700);
+
+    // Corazones flotando
+    setInterval(() => {
+      const corazon = document.createElement('div');
+      corazon.classList.add('corazon');
+      corazon.style.left = Math.random() * 100 + "vw";
+      corazon.style.bottom = "-30px";
+      corazon.style.animationDuration = (5 + Math.random() * 5) + "s";
+      document.getElementById("contenedor-corazones").appendChild(corazon);
+      setTimeout(() => corazon.remove(), 10000);
+    }, 300);
+  </script>
+</body>
+</html>
